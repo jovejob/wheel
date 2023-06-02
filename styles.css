@@ -44,3 +44,10 @@
     filter: blur(0px);
   }
 }
+
+.result {
+  text-align: center;
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 18px;
+}
