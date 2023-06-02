@@ -1,5 +1,3 @@
-// Immediately invoked function expression
-// to not pollute the global scope
 (function() {
   // Constants for wheel sections
   const sections = [
@@ -17,16 +15,67 @@
     "Try Again"
   ];
 
+  // Form elements
+  const form = document.querySelector('.form');
+  const nameInput = document.querySelector('#name');
+  const surnameInput = document.querySelector('#surname');
+  const emailInput = document.querySelector('#email');
+
   // Wheel elements
+  const wheelContainer = document.querySelector('.wheel-container');
   const wheel = document.querySelector('.wheel');
-  const startButton = document.querySelector('.button');
+  const spinButton = document.querySelector('.spin-button');
   const pointer = document.querySelector('.marker');
+
+  // Result element
+  const resultElement = document.querySelector('.result');
 
   // Initialize spin count
   let spinCount = 0;
 
-  // Disable start button initially
-  startButton.disabled = true;
+  // Disable spin button initially
+  spinButton.disabled = true;
+
+  // Form submission handler
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    if (validateForm()) {
+      // Hide the form
+      form.style.display = 'none';
+      
+      // Enable spin button
+      spinButton.disabled = false;
+    }
+  });
+
+  // Validate the form inputs
+  function validateForm() {
+    let valid = true;
+
+    if (nameInput.value.trim() === '') {
+      valid = false;
+      nameInput.classList.add('error');
+    } else {
+      nameInput.classList.remove('error');
+    }
+
+    if (surnameInput.value.trim() === '') {
+      valid = false;
+      surnameInput.classList.add('error');
+    } else {
+      surnameInput.classList.remove('error');
+    }
+
+    if (emailInput.value.trim() === '') {
+      valid = false;
+      emailInput.classList.add('error');
+    } else {
+      emailInput.classList.remove('error');
+    }
+
+    return valid;
+  }
 
   // Calculate a random spin result
   function getSpinResult() {
@@ -36,31 +85,24 @@
 
   // AJAX call function
   function getPrize() {
-    // todo Replace the URL with the actual endpoint for prize retrieval
-    // const url = 'https://whee/api/prize';
     const url = 'prize.json';
 
     return fetch(url)
       .then(response => response.json())
       .then(data => {
-        // Handle the prize data
         console.log('Prize:', data);
-        // Display the prize to the user
-        const resultElement = document.querySelector('.result');
         resultElement.textContent = `Congratulations! You won ${data.prize}!`;
       })
       .catch(error => {
         console.error('Error:', error);
-        // Display error message to the user
-        const resultElement = document.querySelector('.result');
         resultElement.textContent = 'An error occurred. Please try again later.';
       });
   }
 
   // Start the spin animation
   function startSpin() {
-    // Disable start button during spin
-    startButton.disabled = true;
+    // Disable spin button during spin
+    spinButton.disabled = true;
 
     // Calculate a new rotation between 5000 and 10000
     const deg = Math.floor(5000 + Math.random() * 5000);
@@ -75,7 +117,6 @@
     wheel.classList.add('blur');
 
     // Remove any previous result message
-    const resultElement = document.querySelector('.result');
     resultElement.textContent = '';
 
     // Wait for 1 second and stop the spin
@@ -108,7 +149,6 @@
     // Check the spin result
     const spinResult = getSpinResult();
     console.log('Spin Result:', spinResult);
-    const resultElement = document.querySelector('.result');
     resultElement.textContent = spinResult;
 
     if (spinResult === 'WIN') {
@@ -117,16 +157,15 @@
     } else {
       // Check if the player has more spins
       if (spinCount < 2) {
-        // Enable start button for another spin
-        startButton.disabled = false;
+        // Enable spin button for another spin
+        spinButton.disabled = false;
       } else {
         // Display "Try next time" message
-        const resultElement = document.querySelector('.result');
         resultElement.textContent = 'Sorry, better luck next time!';
       }
     }
   }
 
-  // Event listener for start button
-  startButton.addEventListener('click', startSpin);
+  // Event listener for spin button
+  spinButton.addEventListener('click', startSpin);
 })();

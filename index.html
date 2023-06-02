@@ -8,19 +8,22 @@
 </head>
 
 <body>
-  <!-- <div id="app">
-    <img class="marker" src="marker.png" />
-    <img class="wheel" src="wheel.png" />
-    <img class="button" src="button.png" />
-  </div> -->
   <div id="app">
-    <img class="marker" src="marker.png" />
-    <img class="wheel" src="wheel.png" />
-    <img class="button" src="button.png" />
+    <form class="form">
+      <input type="text" id="name" placeholder="Name" required />
+      <input type="text" id="surname" placeholder="Surname" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <button type="submit">Submit</button>
+    </form>
+    <div class="wheel-container">
+      <img class="marker" src="marker.png" />
+      <img class="wheel" src="wheel.png" />
+      <button class="button spin-button" disabled>
+        <img src="button.png" alt="Spin" />
+      </button>
+    </div>
     <div class="result"></div>
   </div>
-
-
   <script src="script.js"></script>
 </body>
 
